@@ -6,7 +6,7 @@
 #    By: tkomatsu <tkomatsu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/08 20:22:12 by tkomatsu          #+#    #+#              #
-#    Updated: 2021/02/27 12:06:04 by tkomatsu         ###   ########.fr        #
+#    Updated: 2021/03/02 21:00:01 by tkomatsu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,12 +82,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@printf "$(_GREEN)█"
 
 $(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)$(READ_DIR)
-	@mkdir -p $(OBJ_DIR)$(PARSE_DIR)
-	@mkdir -p $(OBJ_DIR)$(EXE_DIR)
 	@mkdir -p $(OBJ_DIR)$(UTIL_DIR)
-	@mkdir -p $(OBJ_DIR)$(TOKEN_DIR)
-	@mkdir -p $(OBJ_DIR)$(EASTER_DIR)
 
 clean:
 	@echo "$(_YELLOW)Removing object files ...$(_END)"
