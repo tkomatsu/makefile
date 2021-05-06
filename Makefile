@@ -6,7 +6,7 @@
 #    By: tkomatsu <tkomatsu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/08 20:22:12 by tkomatsu          #+#    #+#              #
-#    Updated: 2021/03/02 21:00:01 by tkomatsu         ###   ########.fr        #
+#    Updated: 2021/05/06 15:47:54 by tkomatsu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,10 +32,13 @@ LIBFT = libft
 # ****************************************************************************
 
 CC = gcc
+CXX = clang++
 
 INCLUDE = includes
 
 CFLAGS = -Wall -Werror -Wextra -I $(INCLUDE)
+CXXFLAGS = -Wall -Werror -Wextra -I $(INCLUDE)
+
 LIBFLAGS = -L $(LIB_DIR)libft -lft
 
 DEBUG_CFLAGS = -g3
