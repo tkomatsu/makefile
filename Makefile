@@ -31,86 +31,86 @@ LIBFT = libft
 # Config
 # ****************************************************************************
 
+SHELL = /bin/bash
 CC = gcc
 CXX = clang++
-
 INCLUDE = includes
-
 CFLAGS = -Wall -Werror -Wextra -I $(INCLUDE)
-CXXFLAGS = -Wall -Werror -Wextra -I $(INCLUDE)
-
+CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -I $(INCLUDE)
 LIBFLAGS = -L $(LIB_DIR)libft -lft
-
-DEBUG_CFLAGS = -g3
+DEBUG_FLAGS = -g3
 
 # Source files
 # ****************************************************************************
-#
-# utility
-
-UTIL_DIR = utils/
-UTIL_FILES = utils.c
-
-UTIL_SRCS = $(addprefix $(UTIL_DIR), $(UTIL_FILES))
-
-SRC_FILES =	main.c \
-			$(UTIL_SRCS)
-
-# addprefix
 
 SRC_DIR = srcs/
+OBJ_DIR = objs/
 LIB_DIR = lib/
 
-OBJ_DIR = objs/
-OBJS = $(SRC_FILES:%.c=$(OBJ_DIR)%.o)
+# C program
+SRCS = $(shell find $(SRC_DIR) -name '*.c' | sed 's!^.*/!!')
+OBJS = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
+
+# C++ program
+# SRCS = $(shell find $(SRC_DIR) -name '*.cpp' | sed 's!^.*/!!')
+# OBJS = $(addprefix $(OBJ_DIR), $(SRCS:.cpp=.o))
 
 # Recipe
 # ****************************************************************************
 
 all: $(NAME)
 
+# C program
 $(NAME): $(LIBFT) $(OBJS)
-	@echo "$(_END)\nCompiled source files"
+	@printf "$(_END)\nCompiled source files\n"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFLAGS) -o $@
-	@echo "$(_GREEN)Finish compiling $(NAME)!"
-	@echo "Try \"./$(NAME)\" to use$(_END)"
+	@printf "$(_GREEN)Finish compiling $(NAME)!\n"
+	@printf "Try \"./$(NAME)\" to use$(_END)\n"
 
 $(LIBFT):
 	@make -C $(LIB_DIR)$(LIBFT)
 
-$(OBJS): $(OBJ_DIR)
+# C++ program
+# $(NAME): $(OBJS)
+# 	@printf "$(_END)\nCompiled source files\n"
+# 	@$(CXX) $(CXXFLAGS) $(OBJS) -o $@
+# 	@printf "$(_GREEN)Finish compiling $@!\n"
+# 	@printf "Try \"./$@\" to use$(_END)\n"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	@if [ ! -d $(OBJ_DIR) ];then mkdir $(OBJ_DIR); fi
 	@$(CC) $(CFLAGS) -c $< -o $@ 
 	@printf "$(_GREEN)█"
 
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)$(UTIL_DIR)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
+	@if [ ! -d $(OBJ_DIR) ];then mkdir $(OBJ_DIR); fi
+	@$(CXX) $(CXXFLAGS) -c $< -o $@ 
+	@printf "$(_GREEN)█"
 
 clean:
-	@echo "$(_YELLOW)Removing object files ...$(_END)"
+	@printf "$(_YELLOW)Removing object files ...$(_END)\n"
 	@make clean -C $(LIB_DIR)$(LIBFT)
 	@rm -rf $(OBJ_DIR)
 	@rm -fr *.dSYM
 
 fclean:
-	@echo "$(_RED)Removing object files and program ...$(_END)"
+	@printf "$(_RED)Removing object files and program ...$(_END)\n"
 	@make fclean -C $(LIB_DIR)$(LIBFT)
 	@rm -rf $(NAME) $(OBJ_DIR)
 	@rm -fr *.dSYM
 
 re: fclean all
 
-debug: CFLAGS += -fsanitize=address $(DEBUG_CFLAGS)
+debug: CFLAGS += -fsanitize=address $(DEBUG_FLAGS)
 debug: re
-	@echo "$(_BLUE)Debug build done$(_END)"
+	@printf "$(_BLUE)Debug build done$(_END)\n"
 
-leak: CFLAGS += $(DEBUG_CFLAGS)
+leak: CFLAGS += $(DEBUG_FLAGS)
 leak: re
-	@echo "$(_BLUE)Leak check build done$(_END)"
+	@printf "$(_BLUE)Leak check build done$(_END)\n"
 
-test: all
-	@cd test && bash check.sh
+check: re
+	./$(NAME)
 
 PHONY: all clean fclean re debug leak test libft
 
