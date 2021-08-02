@@ -6,7 +6,7 @@
 #    By: tkomatsu <tkomatsu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/08 20:22:12 by tkomatsu          #+#    #+#              #
-#    Updated: 2021/05/06 15:47:54 by tkomatsu         ###   ########.fr        #
+#    Updated: 2021/08/02 14:54:12 by tkomatsu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SHELL = /bin/bash
 CC = gcc
 CXX = clang++
 INCLUDE = includes
-CFLAGS = -Wall -Werror -Wextra -I $(INCLUDE)
+CFLAGS = -Wall -Werror -Wextra -I $(INCLUDE) -MMD -MP
 CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -I $(INCLUDE)
 LIBFLAGS = -L $(LIB_DIR)libft -lft
 DEBUG_FLAGS = -g3
@@ -50,6 +50,7 @@ LIB_DIR = lib/
 # C program
 SRCS = $(shell find $(SRC_DIR) -name '*.c' | sed 's!^.*/!!')
 OBJS = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
+DEPENDS = $(OBJS:.o=.d)
 
 # C++ program
 # SRCS = $(shell find $(SRC_DIR) -name '*.cpp' | sed 's!^.*/!!')
@@ -58,10 +59,10 @@ OBJS = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 # Recipe
 # ****************************************************************************
 
-all: $(NAME)
+all: $(LIBFT) $(NAME)
 
 # C program
-$(NAME): $(LIBFT) $(OBJS)
+$(NAME): $(LIB_DIR)$(LIBFT)/$(LIBFT).a $(OBJS)
 	@printf "$(_END)\nCompiled source files\n"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFLAGS) -o $@
 	@printf "$(_GREEN)Finish compiling $(NAME)!\n"
@@ -111,6 +112,8 @@ leak: re
 
 check: re
 	./$(NAME)
+
+-include $(DEPENDS)
 
 PHONY: all clean fclean re debug leak test libft
 
