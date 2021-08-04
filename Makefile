@@ -6,7 +6,7 @@
 #    By: tkomatsu <tkomatsu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/08 20:22:12 by tkomatsu          #+#    #+#              #
-#    Updated: 2021/08/04 20:30:19 by tkomatsu         ###   ########.fr        #
+#    Updated: 2021/08/04 20:36:21 by tkomatsu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ LIBFT = libft
 SRC_DIR = srcs/
 OBJ_DIR = objs/
 LIB_DIR = lib/
-VPATH = $(SRC_DIR)
+VPATH = $(SRC_DIR):$(SRC_DIR)utils
 
 # Config
 # ****************************************************************************
@@ -82,12 +82,12 @@ $(LIBFT):
 # 	@printf "$(_GREEN)Finish compiling $@!\n"
 # 	@printf "Try \"./$@\" to use$(_END)\n"
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+$(OBJ_DIR)%.o: %.c
 	@if [ ! -d $(OBJ_DIR) ];then mkdir $(OBJ_DIR); fi
 	@$(CC) $(CFLAGS) -c $< -o $@ 
 	@printf "$(_GREEN)█"
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
+$(OBJ_DIR)%.o: %.cpp
 	@if [ ! -d $(OBJ_DIR) ];then mkdir $(OBJ_DIR); fi
 	@$(CXX) $(CXXFLAGS) -c $< -o $@ 
 	@printf "$(_GREEN)█"
