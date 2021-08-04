@@ -6,7 +6,7 @@
 #    By: tkomatsu <tkomatsu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/08 20:22:12 by tkomatsu          #+#    #+#              #
-#    Updated: 2021/08/02 14:54:12 by tkomatsu         ###   ########.fr        #
+#    Updated: 2021/08/04 20:30:19 by tkomatsu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,10 @@ _END	= \033[0m
 
 NAME = template
 LIBFT = libft
+SRC_DIR = srcs/
+OBJ_DIR = objs/
+LIB_DIR = lib/
+VPATH = $(SRC_DIR)
 
 # Config
 # ****************************************************************************
@@ -35,26 +39,26 @@ SHELL = /bin/bash
 CC = gcc
 CXX = clang++
 INCLUDE = includes
-CFLAGS = -Wall -Werror -Wextra -I $(INCLUDE) -MMD -MP
-CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -I $(INCLUDE)
-LIBFLAGS = -L $(LIB_DIR)libft -lft
+CXX_INCLUDE = -I $(shell echo $(VPATH) | sed 's/:/ -I /g')
+
+BASEFLAGS = -Wall -Werror -Wextra -MMD -MP
+CFLAGS = $(BASEFLAGS) -I $(INCLUDE)
+CXXFLAGS = $(BASEFLAGS) -std=c++98 $(CXX_INCLUDE)
+LIBFLAGS = -L $(LIB_DIR)$(LIBFT) -lft
 DEBUG_FLAGS = -g3
 
 # Source files
 # ****************************************************************************
 
-SRC_DIR = srcs/
-OBJ_DIR = objs/
-LIB_DIR = lib/
-
 # C program
 SRCS = $(shell find $(SRC_DIR) -name '*.c' | sed 's!^.*/!!')
 OBJS = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
-DEPENDS = $(OBJS:.o=.d)
 
 # C++ program
 # SRCS = $(shell find $(SRC_DIR) -name '*.cpp' | sed 's!^.*/!!')
 # OBJS = $(addprefix $(OBJ_DIR), $(SRCS:.cpp=.o))
+
+DEPENDS = $(OBJS:.o=.d)
 
 # Recipe
 # ****************************************************************************
@@ -103,14 +107,16 @@ fclean:
 re: fclean all
 
 debug: CFLAGS += -fsanitize=address $(DEBUG_FLAGS)
+debug: CXXFLAGS += -fsanitize=address $(DEBUG_FLAGS)
 debug: re
 	@printf "$(_BLUE)Debug build done$(_END)\n"
 
 leak: CFLAGS += $(DEBUG_FLAGS)
+leak: CXXFLAGS += $(DEBUG_FLAGS)
 leak: re
 	@printf "$(_BLUE)Leak check build done$(_END)\n"
 
-check: re
+check: all
 	./$(NAME)
 
 -include $(DEPENDS)
