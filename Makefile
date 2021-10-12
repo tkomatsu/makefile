@@ -6,7 +6,7 @@
 #    By: tkomatsu <tkomatsu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/08 20:22:12 by tkomatsu          #+#    #+#              #
-#    Updated: 2021/08/04 20:36:21 by tkomatsu         ###   ########.fr        #
+#    Updated: 2021/10/12 11:17:53 by tkomatsu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,12 +85,12 @@ $(LIBFT):
 $(OBJ_DIR)%.o: %.c
 	@if [ ! -d $(OBJ_DIR) ];then mkdir $(OBJ_DIR); fi
 	@$(CC) $(CFLAGS) -c $< -o $@ 
-	@printf "$(_GREEN)█"
+	@printf "$(_GREEN)█$(_END)"
 
 $(OBJ_DIR)%.o: %.cpp
 	@if [ ! -d $(OBJ_DIR) ];then mkdir $(OBJ_DIR); fi
 	@$(CXX) $(CXXFLAGS) -c $< -o $@ 
-	@printf "$(_GREEN)█"
+	@printf "$(_GREEN)█$(_END)"
 
 clean:
 	@printf "$(_YELLOW)Removing object files ...$(_END)\n"
