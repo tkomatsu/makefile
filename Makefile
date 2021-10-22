@@ -6,7 +6,7 @@
 #    By: tkomatsu <tkomatsu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/08 20:22:12 by tkomatsu          #+#    #+#              #
-#    Updated: 2021/10/12 11:17:53 by tkomatsu         ###   ########.fr        #
+#    Updated: 2021/10/22 16:54:24 by tkomatsu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,11 +51,11 @@ DEBUG_FLAGS = -g3
 # ****************************************************************************
 
 # C program
-SRCS = $(shell find $(SRC_DIR) -name '*.c' | sed 's!^.*/!!')
+SRCS = $(shell find $(SRC_DIR) -name '*.c' | xargs basename -a)
 OBJS = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 
 # C++ program
-# SRCS = $(shell find $(SRC_DIR) -name '*.cpp' | sed 's!^.*/!!')
+# SRCS = $(shell find $(SRC_DIR) -name '*.cpp' | xargs basename -a)
 # OBJS = $(addprefix $(OBJ_DIR), $(SRCS:.cpp=.o))
 
 DEPENDS = $(OBJS:.o=.d)
